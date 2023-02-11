@@ -1,22 +1,14 @@
-import classes from "./TodoContainer.module.scss";
+// import classes from "./TodoContainer.module.scss";
+import TodoItem from "./TodoItem/TodoItem";
 
 export const TodoContainer = () => {
+  const todos = ["Task to do", "Task to do 2", "Task yourself"];
+
   return (
-    <div className={classes.TodoItem + "flex"}>
-      <div>
-        <input type="checkbox" />
-      </div>
-      <h2>Task to do</h2>
-      <div>
-        <button>
-          <i className="fa fa-pencil" />
-        </button>
-      </div>
-      <div>
-        <button>
-          <i className="fa fa-trash" />
-        </button>
-      </div>
-    </div>
+    <>
+      {todos.map((todo) => (
+        <TodoItem todo={todo} />
+      ))}
+    </>
   );
 };
