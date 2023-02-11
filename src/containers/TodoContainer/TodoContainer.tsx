@@ -1,21 +1,22 @@
 // import classes from "./TodoContainer.module.scss";
-import { Button } from "../../components/Button/Button";
+import { useState } from "react";
 import TodoItem from "./TodoItem/TodoItem";
-import { TextField } from "../../components/TextField/TextField";
+import { AddTodoItem } from "./AddTodoItem/AddTodoItem";
 
 export const TodoContainer = () => {
-  const todos = ["Task to do", "Task to do 2", "Task yourself"];
+  const [todos, setTodos] = useState<string[]>([
+    "Task to do",
+    "Task to do 2",
+    "Task yourself",
+  ]);
+
+  const addToTodos = (task: string) => {
+    setTodos((prevTodos) => [...prevTodos, task]);
+  };
 
   return (
     <>
-      <form className="flex">
-        <div className="flex-grow-1 mr-2">
-          <TextField />
-        </div>
-        <div>
-          <Button primary>Add</Button>
-        </div>
-      </form>
+      <AddTodoItem onAddClick={addToTodos} />
       {todos.map((todo, index) => (
         <TodoItem key={index} todo={todo} />
       ))}

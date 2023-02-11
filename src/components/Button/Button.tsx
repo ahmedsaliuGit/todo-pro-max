@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { MouseEventHandler, ReactNode } from "react";
 import classes from "./Button.module.scss";
 
 type ButtonProps = {
@@ -7,6 +7,7 @@ type ButtonProps = {
   secondary?: string;
   disable?: string;
   transparent?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
 export const Button = ({
@@ -15,6 +16,7 @@ export const Button = ({
   secondary,
   disable,
   transparent,
+  onClick,
 }: ButtonProps) => {
   const className = [classes.Button];
 
@@ -22,5 +24,9 @@ export const Button = ({
   if (secondary) className.push(classes.Secondary);
   if (disable) className.push(classes.Disable);
   if (transparent) className.push(classes.Transparent);
-  return <button className={className.join(" ")}>{children}</button>;
+  return (
+    <button type="button" onClick={onClick} className={className.join(" ")}>
+      {children}
+    </button>
+  );
 };
