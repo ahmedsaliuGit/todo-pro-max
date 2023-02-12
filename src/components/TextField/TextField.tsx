@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import classes from "./TextField.module.scss";
 
 interface TextFieldProps {
@@ -5,11 +6,16 @@ interface TextFieldProps {
   value: string;
 }
 
-export const TextField = ({ onInput, value }: TextFieldProps) => (
-  <input
-    type="text"
-    value={value}
-    onChange={(event) => onInput(event.target.value)}
-    className={classes.TextField}
-  />
+export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
+  ({ onInput, value }, ref) => {
+    return (
+      <input
+        ref={ref}
+        type="text"
+        value={value}
+        onChange={(event) => onInput(event.target.value)}
+        className={classes.TextField}
+      />
+    );
+  }
 );

@@ -8,6 +8,7 @@ type ButtonProps = {
   disable?: string;
   transparent?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  type?: "button" | "submit";
 };
 
 export const Button = ({
@@ -17,6 +18,7 @@ export const Button = ({
   disable,
   transparent,
   onClick,
+  type,
 }: ButtonProps) => {
   const className = [classes.Button];
 
@@ -25,7 +27,7 @@ export const Button = ({
   if (disable) className.push(classes.Disable);
   if (transparent) className.push(classes.Transparent);
   return (
-    <button type="button" onClick={onClick} className={className.join(" ")}>
+    <button type={type} onClick={onClick} className={className.join(" ")}>
       {children}
     </button>
   );
