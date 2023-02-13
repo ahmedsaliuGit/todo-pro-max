@@ -3,38 +3,26 @@ import { useEffect, useState } from "react";
 import TodoItem from "./TodoItem/TodoItem";
 import { AddTodoItem } from "./AddTodoItem/AddTodoItem";
 import { Todo } from "../../models/Todo";
+import { TodoService } from "../../services/Todo.service";
 
 export const TodoContainer = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const todoService = new TodoService();
 
   const fetchTodos = () => {
-    return fetch("http://localhost:3001/todos").then((response) =>
-      response.json().then((data) => setTodos(data))
-    );
+    return todoService.getAllTodos().then((data) => setTodos(data));
   };
 
   useEffect(() => {
     fetchTodos();
-  }, []);
+  });
 
   const addToTodos = (task: string) => {
-    fetch("http://localhost:3001/todos", {
-      method: "POST",
-      body: JSON.stringify({ todo: task }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then(() => fetchTodos());
+    todoService.addTodo(task).then(() => fetchTodos());
   };
 
   const deleteTodo = (todoId: number) => {
-    fetch("http://localhost:3001/todos", {
-      method: "DELETE",
-      body: JSON.stringify({ id: todoId }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then(() => fetchTodos());
+    todoService.deleteTodo(todoId).then(() => fetchTodos());
   };
 
   return (
