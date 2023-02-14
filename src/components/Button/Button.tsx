@@ -4,9 +4,9 @@ import classes from "./Button.module.scss";
 type ButtonProps = {
   children: ReactNode;
   primary?: boolean;
-  secondary?: string;
-  disable?: string;
-  transparent?: string;
+  secondary?: boolean;
+  disable?: boolean;
+  transparent?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: "button" | "submit";
 };

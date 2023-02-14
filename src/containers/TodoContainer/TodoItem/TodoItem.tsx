@@ -12,7 +12,7 @@ const TodoItem = ({ todo, onDeleteTodo }: PropTypes) => {
   return (
     <div className={classes.TodoItem + " flex"}>
       <div>
-        <CheckBox />
+        <CheckBox value={false} />
       </div>
       <p className="mr-auto ml-2">{todo.task}</p>
       <div>

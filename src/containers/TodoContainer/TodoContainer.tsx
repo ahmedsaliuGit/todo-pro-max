@@ -4,6 +4,7 @@ import TodoItem from "./TodoItem/TodoItem";
 import { AddTodoItem } from "./AddTodoItem/AddTodoItem";
 import { Todo } from "../../models/Todo";
 import { TodoService } from "../../services/Todo.service";
+import { EditTodoItem } from "./EditTodoItem/EditTodoItem";
 
 type TodoContainerProps = {
   todoService: TodoService;
@@ -11,6 +12,7 @@ type TodoContainerProps = {
 
 export const TodoContainer = ({ todoService }: TodoContainerProps) => {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [selected, setSelected] = useState(-1);
 
   const fetchTodos = () => {
     return todoService.getAllTodos().then((data) => setTodos(data));
@@ -34,6 +36,7 @@ export const TodoContainer = ({ todoService }: TodoContainerProps) => {
       {todos.map((todo, index) => (
         <TodoItem key={index} todo={todo} onDeleteTodo={deleteTodo} />
       ))}
+      {selected >= 0 && <EditTodoItem />}
     </>
   );
 };
