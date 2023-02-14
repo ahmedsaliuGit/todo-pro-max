@@ -5,9 +5,12 @@ import { AddTodoItem } from "./AddTodoItem/AddTodoItem";
 import { Todo } from "../../models/Todo";
 import { TodoService } from "../../services/Todo.service";
 
-export const TodoContainer = () => {
+type TodoContainerProps = {
+  todoService: TodoService;
+};
+
+export const TodoContainer = ({ todoService }: TodoContainerProps) => {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const todoService = new TodoService();
 
   const fetchTodos = () => {
     return todoService.getAllTodos().then((data) => setTodos(data));

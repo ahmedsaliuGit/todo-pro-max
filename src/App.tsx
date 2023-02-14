@@ -1,5 +1,5 @@
 import React from "react";
-import { TodoContainer } from "./containers/TodoContainer/TodoContainer";
+import TodoContainer from "./containers/TodoContainer";
 import "./styles/_base.scss";
 import classes from "./App.module.scss";
 import Header from "./_partials/Header/Header";
