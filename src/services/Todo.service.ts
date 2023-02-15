@@ -8,12 +8,20 @@ export class TodoService {
     this.http = httpAdapter;
   }
 
+  getTodo(todoId: number) {
+    return this.http.get<Todo>("/todos/" + todoId);
+  }
+
   getAllTodos() {
     return this.http.get<Todo[]>("/todos");
   }
 
   addTodo(task: string) {
     return this.http.post("/todos", { todo: task });
+  }
+
+  updateTodo(todoId: number, task: Partial<Todo>) {
+    return this.http.patch<Partial<Todo>>("/todos/" + todoId, task);
   }
 
   deleteTodo(todoId: number) {

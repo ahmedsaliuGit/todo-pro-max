@@ -1,11 +1,11 @@
-import { ElementType } from "react";
+import { ComponentProps, ElementType } from "react";
 import { container } from "../dependencies";
 
 export const withDependency = (
   Component: ElementType,
   dependencies: { [key: string]: symbol }
 ) => {
-  const props = {};
+  const resolvedDependencies = {};
 
   Object.keys(dependencies).forEach((propName) => {
     const dependencyKey = Object.getOwnPropertyDescriptor(
@@ -14,11 +14,13 @@ export const withDependency = (
     )?.value;
     const dependency = container.get(dependencyKey);
 
-    Object.defineProperty(props, propName, {
+    Object.defineProperty(resolvedDependencies, propName, {
       value: dependency,
       enumerable: true,
     });
   });
 
-  return () => <Component {...props} />;
+  return (props: ComponentProps<typeof Component>) => (
+    <Component {...props} {...resolvedDependencies} />
+  );
 };

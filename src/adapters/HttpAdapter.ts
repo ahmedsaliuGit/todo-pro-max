@@ -19,6 +19,16 @@ export class HttpAdapter {
     }).then((response) => response.json());
   }
 
+  patch<T>(url: string, data: T) {
+    return fetch(this.baseUrl + url, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => response.json());
+  }
+
   delete<T>(url: string, data: T) {
     return fetch(this.baseUrl + url, {
       method: "DELETE",

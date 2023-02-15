@@ -5,18 +5,30 @@ import classes from "./TodoItem.module.scss";
 
 interface PropTypes {
   todo: Todo;
+  onEditTodo: (todoId: number) => void;
   onDeleteTodo: (id: number) => void;
+  onDoneChecked: (id: number, isDone: boolean) => void;
 }
 
-const TodoItem = ({ todo, onDeleteTodo }: PropTypes) => {
+const TodoItem = ({
+  todo,
+  onDeleteTodo,
+  onEditTodo,
+  onDoneChecked,
+}: PropTypes) => {
   return (
     <div className={classes.TodoItem + " flex"}>
       <div>
-        <CheckBox value={false} />
+        <CheckBox
+          value={todo.isDone}
+          onInput={(value) => onDoneChecked(todo.id, value)}
+        />
       </div>
-      <p className="mr-auto ml-2">{todo.task}</p>
+      <p className={`mr-auto ml-2 ${todo.isDone && classes.TodoIsDone}`}>
+        {todo.task}
+      </p>
       <div>
-        <Button>
+        <Button onClick={() => onEditTodo(todo.id)}>
           <i className="fa fa-pencil" />
         </Button>
       </div>
