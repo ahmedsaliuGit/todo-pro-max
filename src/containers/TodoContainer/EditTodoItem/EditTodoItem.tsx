@@ -77,7 +77,11 @@ export const EditTodoItem = ({
         label="Description"
         onInput={(value) => onFormChanged({ description: value })}
       />
-      <CanvasField label="Hand Notes" value={todo.handNotes} />
+      <CanvasField
+        label="Hand Notes"
+        value={todo.handNotes}
+        onInput={(value) => onFormChanged({ handNotes: value })}
+      />
       <div>
         <Button primary onClick={saveButtonClicked}>
           Save
