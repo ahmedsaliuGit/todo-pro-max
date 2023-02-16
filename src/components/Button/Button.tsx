@@ -9,6 +9,7 @@ type ButtonProps = {
   transparent?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: "button" | "submit";
+  className?: string;
 };
 
 export const Button = ({
@@ -19,15 +20,16 @@ export const Button = ({
   transparent,
   onClick,
   type,
+  className = "",
 }: ButtonProps) => {
-  const className = [classes.Button];
+  const classNames = [classes.Button, className];
 
-  if (primary) className.push(classes.Primary);
-  if (secondary) className.push(classes.Secondary);
-  if (disable) className.push(classes.Disable);
-  if (transparent) className.push(classes.Transparent);
+  if (primary) classNames.push(classes.Primary);
+  if (secondary) classNames.push(classes.Secondary);
+  if (disable) classNames.push(classes.Disable);
+  if (transparent) classNames.push(classes.Transparent);
   return (
-    <button type={type} onClick={onClick} className={className.join(" ")}>
+    <button type={type} onClick={onClick} className={classNames.join(" ")}>
       {children}
     </button>
   );

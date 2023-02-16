@@ -12,8 +12,8 @@ export class TodoService {
     return this.http.get<Todo>("/todos/" + todoId);
   }
 
-  getAllTodos() {
-    return this.http.get<Todo[]>("/todos");
+  getAllTodos(params?: { query: { isDone: string } }) {
+    return this.http.get<Todo[]>("/todos", params);
   }
 
   addTodo(task: string) {

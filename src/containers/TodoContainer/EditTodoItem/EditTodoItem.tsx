@@ -82,11 +82,15 @@ export const EditTodoItem = ({
         value={todo.handNotes}
         onInput={(value) => onFormChanged({ handNotes: value })}
       />
-      <div>
-        <Button primary onClick={saveButtonClicked}>
+      <div className="flex mt-2">
+        <Button
+          className="flex-grow-1 mr-2"
+          primary
+          onClick={saveButtonClicked}
+        >
           Save
         </Button>
-        <Button secondary onClick={cancelButtonClicked}>
+        <Button className="flex-grow-1" secondary onClick={cancelButtonClicked}>
           Cancel
         </Button>
       </div>

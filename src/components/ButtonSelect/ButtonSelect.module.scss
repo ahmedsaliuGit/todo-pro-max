@@ -1,0 +1,21 @@
+@use "../../styles/tokens" as *;
+
+.ButtonSelectWrapper {
+  display: flex;
+}
+.ButtonSelectOption {
+  border: 0;
+  background-color: rgba($SECONDARY_COLOR, 0.2);
+  color: $SECONDARY_COLOR;
+  text-transform: uppercase;
+  margin-right: $SPACE-1;
+  border-radius: $BORDER-RADIUS;
+  padding: $SPACE-1 $SPACE-2;
+  cursor: pointer;
+}
+
+.ButtonSelectOption.Selected {
+  border: 2px solid $SECONDARY_COLOR;
+  background-color: rgba($SECONDARY_COLOR, 0.9);
+  color: white;
+}
