@@ -4,7 +4,7 @@ import classes from "./EditTodoItem.module.scss";
 import { CheckBox } from "../../../components/CheckBox/CheckBox";
 import { Button } from "../../../components/Button/Button";
 import { CanvasField } from "../../../components/CanvasField/CanvasField";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TodoService } from "../../../services/Todo.service";
 
 type EditTodoItemPropsType = {
@@ -59,7 +59,7 @@ export const EditTodoItem = ({
     <div className={classes.EditTodoItem}>
       <h2>Edit Todo</h2>
       <TextField
-        onInput={(value) => onFormChanged({ task: value })}
+        onInput={useCallback((value) => onFormChanged({ task: value }), [])}
         value={todo.task}
         label
         labelName="Task"
@@ -69,18 +69,27 @@ export const EditTodoItem = ({
         value={todo.isDone}
         label
         labelName="Is Done"
-        onInput={(value) => onFormChanged({ isDone: value })}
+        onInput={useCallback(
+          (value: boolean) => onFormChanged({ isDone: value }),
+          []
+        )}
       />
       <TextArea
         value={todo.description}
         name="description"
         label="Description"
-        onInput={(value) => onFormChanged({ description: value })}
+        onInput={useCallback(
+          (value) => onFormChanged({ description: value }),
+          []
+        )}
       />
       <CanvasField
         label="Hand Notes"
         value={todo.handNotes}
-        onInput={(value) => onFormChanged({ handNotes: value })}
+        onInput={useCallback(
+          (value) => onFormChanged({ handNotes: value }),
+          []
+        )}
       />
       <div className="flex mt-2">
         <Button
