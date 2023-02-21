@@ -1,17 +1,14 @@
 import { TextField } from "../../../components/TextField/TextField";
 import { TextArea } from "../../../components/TextArea/TextArea";
-import classes from "./EditTodoItem.module.scss";
 import { CheckBox } from "../../../components/CheckBox/CheckBox";
 import { Button } from "../../../components/Button/Button";
 import { CanvasField } from "../../../components/CanvasField/CanvasField";
 import { useCallback, useEffect, useState } from "react";
 import { TodoService } from "../../../services/Todo.service";
+import { useAppState } from "../../../hoc/useAppState";
 
 type EditTodoItemPropsType = {
-  todoId: number;
-  onClose: () => void;
   todoService: TodoService;
-  onSave: () => void;
 };
 
 type TodoState = {
@@ -21,12 +18,8 @@ type TodoState = {
   isDone: boolean;
 };
 
-export const EditTodoItem = ({
-  onClose,
-  todoId,
-  todoService,
-  onSave,
-}: EditTodoItemPropsType) => {
+export const EditTodoItem = ({ todoService }: EditTodoItemPropsType) => {
+  const { appState, setAppState } = useAppState();
   const [todo, setTodo] = useState<TodoState>({
     task: "",
     description: "",
@@ -35,18 +28,19 @@ export const EditTodoItem = ({
   });
 
   useEffect(() => {
-    todoService.getTodo(todoId).then((todo) => {
+    todoService.getTodo(appState.editTodoId).then((todo) => {
       setTodo(todo);
     });
-  }, [todoId, todoService]);
+  }, [appState.editTodoId, todoService]);
 
   const saveButtonClicked = () => {
-    todoService.updateTodo(todoId, todo).then(() => {
-      onSave();
+    todoService.updateTodo(appState.editTodoId, todo).then(() => {
+      setAppState({ ...appState, isDrawerOpen: false });
     });
   };
 
-  const cancelButtonClicked = () => onClose();
+  const cancelButtonClicked = () =>
+    setAppState({ ...appState, isDrawerOpen: false });
 
   const onFormChanged = (updatedState: Partial<TodoState>) => {
     setTodo((currentState) => ({
@@ -55,11 +49,31 @@ export const EditTodoItem = ({
     }));
   };
 
+  const onTaskChanged = useCallback(
+    (value: string) => onFormChanged({ task: value }),
+    []
+  );
+
+  const onDoneChanged = useCallback(
+    (value: boolean) => onFormChanged({ isDone: value }),
+    []
+  );
+
+  const onDescriptionChanged = useCallback(
+    (value: string) => onFormChanged({ description: value }),
+    []
+  );
+
+  const onHandNoteChanged = useCallback(
+    (value: string) => onFormChanged({ handNotes: value }),
+    []
+  );
+
   return (
-    <div className={classes.EditTodoItem}>
+    <div>
       <h2>Edit Todo</h2>
       <TextField
-        onInput={useCallback((value) => onFormChanged({ task: value }), [])}
+        onInput={onTaskChanged}
         value={todo.task}
         label
         labelName="Task"
@@ -69,27 +83,18 @@ export const EditTodoItem = ({
         value={todo.isDone}
         label
         labelName="Is Done"
-        onInput={useCallback(
-          (value: boolean) => onFormChanged({ isDone: value }),
-          []
-        )}
+        onInput={onDoneChanged}
       />
       <TextArea
         value={todo.description}
         name="description"
         label="Description"
-        onInput={useCallback(
-          (value) => onFormChanged({ description: value }),
-          []
-        )}
+        onInput={onDescriptionChanged}
       />
       <CanvasField
         label="Hand Notes"
         value={todo.handNotes}
-        onInput={useCallback(
-          (value) => onFormChanged({ handNotes: value }),
-          []
-        )}
+        onInput={onHandNoteChanged}
       />
       <div className="flex mt-2">
         <Button

@@ -1,19 +1,18 @@
-// import classes from "./TodoContainer.module.scss";
 import { useEffect, useState } from "react";
 import TodoItem from "./TodoItem/TodoItem";
 import { AddTodoItem } from "./AddTodoItem/AddTodoItem";
 import { Todo } from "../../models/Todo";
 import { TodoService } from "../../services/Todo.service";
-import EditTodoItem from "./EditTodoItem";
 import { ButtonSelect } from "../../components/ButtonSelect/ButtonSelect";
+import { useAppState } from "../../hoc/useAppState";
 
 type TodoContainerProps = {
   todoService: TodoService;
 };
 
 export const TodoContainer = ({ todoService }: TodoContainerProps) => {
+  const { appState, setAppState } = useAppState();
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [selected, setSelected] = useState<number>(-1);
   const [todoFilter, setTodoFilter] = useState<string>("all");
 
   const fetchTodos = () => {
@@ -21,15 +20,18 @@ export const TodoContainer = ({ todoService }: TodoContainerProps) => {
   };
 
   useEffect(() => {
+    if (appState.editTodoId === -1) {
+      fetchTodos();
+    }
     fetchTodos();
-  }, []);
+  }, [appState.editTodoId]);
 
   const addToTodos = (task: string) => {
     todoService.addTodo(task).then(() => fetchTodos());
   };
 
   const editTodo = (todoId: number) => {
-    setSelected(todoId);
+    setAppState({ editTodoId: todoId, isDrawerOpen: true });
   };
 
   const handleDoneChecked = (todoId: number, isDone: boolean) => {
@@ -53,11 +55,6 @@ export const TodoContainer = ({ todoService }: TodoContainerProps) => {
       .then((data) => setTodos(data));
   };
 
-  const closeDrawer = () => {
-    fetchTodos();
-    setSelected(-1);
-  };
-
   return (
     <>
       <AddTodoItem onAddClick={addToTodos} />
@@ -77,13 +74,6 @@ export const TodoContainer = ({ todoService }: TodoContainerProps) => {
           onDeleteTodo={deleteTodo}
         />
       ))}
-      {selected !== -1 && (
-        <EditTodoItem
-          todoId={selected}
-          onClose={closeDrawer}
-          onSave={closeDrawer}
-        />
-      )}
     </>
   );
 };
