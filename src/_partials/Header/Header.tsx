@@ -6,9 +6,9 @@ const Header = () => {
     <header className={classes.Header}>
       <h1 className={classes.HeaderTitle}>Todo Pro Max App</h1>
       <nav className="m-auto">
-        <HeaderLink url="home">Home</HeaderLink>
-        <HeaderLink url="home">Stats</HeaderLink>
-        <HeaderLink url="home">About</HeaderLink>
+        <HeaderLink url="/">Home</HeaderLink>
+        <HeaderLink url="/stats">Stats</HeaderLink>
+        <HeaderLink url="/about">About</HeaderLink>
       </nav>
     </header>
   );

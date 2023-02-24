@@ -8,7 +8,7 @@ interface propTyes {
 
 const HeaderLink = ({ url, children }: propTyes) => {
   return (
-    <a href={`#${url}`} className={classes.HeaderLink + " mr-2 mr-2"}>
+    <a href={`${url}`} className={classes.HeaderLink + " mr-2 mr-2"}>
       {children}
     </a>
   );
