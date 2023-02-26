@@ -1,37 +1,67 @@
-import React from "react";
-import TodoContainer from "./containers/TodoContainer";
+import React, { useEffect, useState } from "react";
 import "./styles/_base.scss";
 import classes from "./App.module.scss";
 import Header from "./_partials/Header/Header";
-import EditTodoItem from "./containers/TodoContainer/EditTodoItem";
 import { AppStateProvider } from "./hoc/useAppState";
-import StatsContainer from "./containers/StatsContainer";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { AboutContainer } from "./containers/AboutContainer/AboutContainer";
+
+const Loading = () => <div>Loading...</div>;
+
+const withAsync = (importFn: any) => {
+  return () => {
+    const [Component, setComponent] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+      importFn().then((module: any) => {
+        setComponent(() => module.default);
+        setIsLoading(false);
+      });
+    }, []);
+
+    return isLoading ? <Loading /> : <Component />;
+  };
+};
+
+const AsyncTodoContainer = withAsync(
+  () => import("./containers/TodoContainer")
+);
+
+const AsyncEditTodoItem = withAsync(
+  () => import("./containers/TodoContainer/EditTodoItem")
+);
+
+const AsyncStatsContainer = withAsync(
+  () => import("./containers/StatsContainer")
+);
+
+const AsyncAboutContainer = withAsync(
+  () => import("./containers/AboutContainer")
+);
 
 function App() {
   return (
     <>
-      <Header />
-      <div className={classes.TodoList + " mr-auto ml-auto"}>
-        <AppStateProvider>
-          <BrowserRouter>
+      <AppStateProvider>
+        <BrowserRouter>
+          <Header />
+          <div className={classes.TodoList + " mr-auto ml-auto"}>
             <Routes>
               <Route
                 path="/"
                 element={
                   <>
-                    <TodoContainer />
-                    <EditTodoItem />
+                    <AsyncTodoContainer />
+                    <AsyncEditTodoItem />
                   </>
                 }
               ></Route>
-              <Route path="/stats" element={<StatsContainer />} />
-              <Route path="/about" element={<AboutContainer />} />
+              <Route path="/stats" element={<AsyncStatsContainer />} />
+              <Route path="/about" element={<AsyncAboutContainer />} />
             </Routes>
-          </BrowserRouter>
-        </AppStateProvider>
-      </div>
+          </div>
+        </BrowserRouter>
+      </AppStateProvider>
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Link } from "react-router-dom";
 import classes from "./HeaderLink.module.scss";
 
 interface propTyes {
@@ -8,9 +9,9 @@ interface propTyes {
 
 const HeaderLink = ({ url, children }: propTyes) => {
   return (
-    <a href={`${url}`} className={classes.HeaderLink + " mr-2 mr-2"}>
+    <Link to={`${url}`} className={classes.HeaderLink + " mr-2 mr-2"}>
       {children}
-    </a>
+    </Link>
   );
 };
 
