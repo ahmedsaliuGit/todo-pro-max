@@ -1,41 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./styles/_base.scss";
-import classes from "./App.module.scss";
 import Header from "./_partials/Header/Header";
 import { AppStateProvider } from "./hoc/useAppState";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { withSuspense } from "./hoc/withSuspense";
+import { PageLayout } from "./components/PageLayout/PageLayout";
 
-const Loading = () => <div>Loading...</div>;
-
-const withAsync = (importFn: any) => {
-  return () => {
-    const [Component, setComponent] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-      importFn().then((module: any) => {
-        setComponent(() => module.default);
-        setIsLoading(false);
-      });
-    }, []);
-
-    return isLoading ? <Loading /> : <Component />;
-  };
-};
-
-const AsyncTodoContainer = withAsync(
+const AsyncTodoContainer = withSuspense(
   () => import("./containers/TodoContainer")
 );
 
-const AsyncEditTodoItem = withAsync(
+const AsyncEditTodoItem = withSuspense(
   () => import("./containers/TodoContainer/EditTodoItem")
 );
 
-const AsyncStatsContainer = withAsync(
+const AsyncStatsContainer = withSuspense(
   () => import("./containers/StatsContainer")
 );
 
-const AsyncAboutContainer = withAsync(
+const AsyncAboutContainer = withSuspense(
   () => import("./containers/AboutContainer")
 );
 
@@ -45,21 +28,21 @@ function App() {
       <AppStateProvider>
         <BrowserRouter>
           <Header />
-          <div className={classes.TodoList + " mr-auto ml-auto"}>
+          <PageLayout>
             <Routes>
               <Route
                 path="/"
                 element={
                   <>
-                    <AsyncTodoContainer />
-                    <AsyncEditTodoItem />
+                    {AsyncTodoContainer}
+                    {AsyncEditTodoItem}
                   </>
                 }
               ></Route>
-              <Route path="/stats" element={<AsyncStatsContainer />} />
-              <Route path="/about" element={<AsyncAboutContainer />} />
+              <Route path="/stats" element={AsyncStatsContainer} />
+              <Route path="/about" element={AsyncAboutContainer} />
             </Routes>
-          </div>
+          </PageLayout>
         </BrowserRouter>
       </AppStateProvider>
     </>
