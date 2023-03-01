@@ -2,9 +2,10 @@ import React from "react";
 import "./styles/_base.scss";
 import Header from "./_partials/Header/Header";
 import { AppStateProvider } from "./hoc/useAppState";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { withSuspense } from "./hoc/withSuspense";
 import { PageLayout } from "./components/PageLayout/PageLayout";
+import StatsContainer from "./containers/StatsContainer";
 
 const AsyncTodoContainer = withSuspense(
   () => import("./containers/TodoContainer")
@@ -26,24 +27,22 @@ function App() {
   return (
     <>
       <AppStateProvider>
-        <BrowserRouter>
-          <Header />
-          <PageLayout>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <>
-                    {AsyncTodoContainer}
-                    {AsyncEditTodoItem}
-                  </>
-                }
-              ></Route>
-              <Route path="/stats" element={AsyncStatsContainer} />
-              <Route path="/about" element={AsyncAboutContainer} />
-            </Routes>
-          </PageLayout>
-        </BrowserRouter>
+        <Header />
+        <PageLayout>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  {AsyncTodoContainer}
+                  {AsyncEditTodoItem}
+                </>
+              }
+            ></Route>
+            <Route path="/stats" element={<StatsContainer />} />
+            <Route path="/about" element={AsyncAboutContainer} />
+          </Routes>
+        </PageLayout>
       </AppStateProvider>
     </>
   );
