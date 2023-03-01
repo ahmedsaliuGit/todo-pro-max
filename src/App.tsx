@@ -5,7 +5,6 @@ import { AppStateProvider } from "./hoc/useAppState";
 import { Route, Routes } from "react-router-dom";
 import { withSuspense } from "./hoc/withSuspense";
 import { PageLayout } from "./components/PageLayout/PageLayout";
-import StatsContainer from "./containers/StatsContainer";
 
 const AsyncTodoContainer = withSuspense(
   () => import("./containers/TodoContainer")
@@ -39,7 +38,7 @@ function App() {
                 </>
               }
             ></Route>
-            <Route path="/stats" element={<StatsContainer />} />
+            <Route path="/stats" element={AsyncStatsContainer} />
             <Route path="/about" element={AsyncAboutContainer} />
           </Routes>
         </PageLayout>
